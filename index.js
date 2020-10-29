@@ -3,10 +3,10 @@ function validateLineup(arr) {
     return acc += element.salary
   }, 0)
 
-  if (salary <= 45000) {
-    return true
-  } else {
+  if (salary > 45000 || arr.length > 9) {
     return false
+  } else {
+    return true
   }
 }
 
