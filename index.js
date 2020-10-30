@@ -3,9 +3,10 @@ function teamIdCounter(arr) {
     return element.teamId
   })
 
-  return maxCounter(teamIdArr) > 2
+  return Math.max(...(Object.values(frequencyCounter(teamIdArr)))) <= 2
 }
-function maxCounter(arr) {
+
+function frequencyCounter(arr) {
   let count = (arr).reduce((acc, element) => {
     if (element in acc) {
       acc[element]++
@@ -16,7 +17,7 @@ function maxCounter(arr) {
     return acc
   }, {})
 
-  return Math.max(...Object.values(count))
+  return count
 }
 
 function gameIdCounter(arr) {
@@ -24,14 +25,29 @@ function gameIdCounter(arr) {
     return player.gameId
   })
 
-  return maxCounter(gameIdArr) > 3
+  return Math.max(...(Object.values(frequencyCounter(gameIdArr)))) <= 3
+}
+function positionChecker(arr) {
+  let positionArr = arr.map((element) => {
+    return element.position
+  })
+
+  let positionCounter = frequencyCounter(positionArr)
+
+  if (positionCounter.P === 1 && positionCounter.C === 1 && positionCounter['1B'] === 1 &&
+    positionCounter['2B'] === 1 && positionCounter['3B'] === 1 && positionCounter.SS === 1) {
+    return true
+  } else {
+    return false
+  }
 }
 
 function validateLineup(arr) {
-  let lineupLengthCheck = (arr.length !== 9)
+  let lineupLengthCheck = (arr.length === 9)
   let salaryCheck = true
   let gameIdCheck = gameIdCounter(arr)
   let teamIdCheck = teamIdCounter(arr)
+  let positionCheck = positionChecker(arr)
   let salary = arr.reduce((acc, element) => {
     return acc += element.salary
   }, 0)
@@ -40,7 +56,7 @@ function validateLineup(arr) {
     salaryCheck = false
   }
 
-  return (lineupLengthCheck && salaryCheck && gameIdCheck && teamIdCheck)
+  return (lineupLengthCheck && salaryCheck && gameIdCheck && teamIdCheck && positionCheck)
 }
 
 module.exports = validateLineup
