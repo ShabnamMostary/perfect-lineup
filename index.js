@@ -60,3 +60,5 @@ function validateLineup(arr) {
 }
 
 module.exports = validateLineup
+
+
